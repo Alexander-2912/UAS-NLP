@@ -5,6 +5,12 @@ import joblib
 import numpy as np
 import streamlit as st
 
+st.set_page_config(
+    page_title="Indonesian Hate Speech Detector",
+    page_icon="🧠",
+    layout="centered"
+)
+
 # NLTK & Sastrawi
 import nltk
 from nltk.corpus import stopwords
@@ -12,17 +18,13 @@ from nltk.tokenize import word_tokenize
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
 def download_nltk():
-    # punkt
+    # Punkt tokenizer
     try:
         nltk.data.find("tokenizers/punkt")
     except LookupError:
         nltk.download("punkt")
 
-    try:
-        nltk.data.find("tokenizers/punkt_tab")
-    except LookupError:
-        nltk.download("punkt_tab")
-
+    # Stopwords
     try:
         nltk.data.find("corpora/stopwords")
     except LookupError:
@@ -75,17 +77,6 @@ def load_models():
     return pipe_bow, pipe_tfidf
 
 pipe_bow, pipe_tfidf = load_models()
-
-
-
-
-
-
-st.set_page_config(
-    page_title="Indonesian Hate Speech Detector",
-    page_icon="🧠",
-    layout="centered"
-)
 
 st.title("Indonesian Hate Speech Classification")
 st.write(
@@ -151,4 +142,4 @@ if st.button("🔍 Prediksi"):
         if proba is not None and classes is not None:
             st.markdown("**Probabilitas kelas:**")
             for cls, p in zip(classes, proba):
-                st.write(f"- `{cls}` : `{p:.4f}`")
+                st.write(f"- {cls} : `{p:.4f}`")
